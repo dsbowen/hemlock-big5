@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="None">
+  
+  
+  <link rel="shortcut icon" href="img/favicon.ico">
+  <title>Hemlock-Big5</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link href="css/extra.css" rel="stylesheet" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Home";
+    var mkdocs_page_input_path = "index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="js/jquery-2.1.1.min.js" defer></script>
+  <script src="js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href="." class="icon icon-home"> Hemlock-Big5</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href=".">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#hemlock-big5">Hemlock-big5</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ipip-50-item-inventory-ipip-50">IPIP 50-item inventory (IPIP-50)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ten-item-personality-inventory-tipi">Ten-item personality inventory (TIPI)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ten-item-big-five-inventory-bfi-10">Ten-item big five inventory (BFI-10)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#license">License</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="api/">API</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href=".">Hemlock-Big5</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Home</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/dsbowen/hemlock-big5/edit/master/docs_md/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="hemlock-big-5">Hemlock Big 5</h1>
+<p>Hemlock-big5 is a <a href="https://dsbowen.github.io/hemlock/" target="_blank">hemlock</a> extension for creating big 5 personality questionnaires.</p>
+<h2 id="installation">Installation</h2>
+<p>With hemlock-CLI (recommended):</p>
+<pre><code>$ hlk install hemlock-big5
+</code></pre>
+<p>With pip:</p>
+<pre><code>$ pip install hemlock-big5
+</code></pre>
+<h2 id="quickstart">Quickstart</h2>
+<p>This assumes you are using the hemlock template. In <code>survey.py</code>:</p>
+<pre><code class="language-python">from hemlock import Branch, Page, Label, route
+from hemlock_big5 import big5
+
+@route('/survey')
+def start():
+    return Branch(
+        big5(page=True),
+        Page(
+            Label('The end.'), 
+            terminal=True
+        )
+    )
+</code></pre>
+<h2 id="citation">Citation</h2>
+<p>Hemlock-big5 includes several versions of big 5 personality questionnaires. Please cite the appropriate questionnaire along with hemlock.</p>
+<h3 id="hemlock-big5">Hemlock-big5</h3>
+<pre><code>@software{bowen2021hemlock-big5,
+  author = {Dillon Bowen},
+  title = {Hemlock-Big5},
+  url = {https://dsbowen.github.io/hemlock-big5/},
+  date = {2021-02-17},
+}
+</code></pre>
+<h3 id="ipip-50-item-inventory-ipip-50">IPIP 50-item inventory (IPIP-50)</h3>
+<pre><code>@article{donnellan2006mini,
+  title={The mini-IPIP scales: tiny-yet-effective measures of the Big Five factors of personality.},
+  author={Donnellan, M Brent and Oswald, Frederick L and Baird, Brendan M and Lucas, Richard E},
+  journal={Psychological assessment},
+  volume={18},
+  number={2},
+  pages={192},
+  year={2006},
+  publisher={American Psychological Association}
+}
+</code></pre>
+<h3 id="ten-item-personality-inventory-tipi">Ten-item personality inventory (TIPI)</h3>
+<pre><code>@article{gosling2003very,
+  title={A very brief measure of the Big-Five personality domains},
+  author={Gosling, Samuel D and Rentfrow, Peter J and Swann Jr, William B},
+  journal={Journal of Research in personality},
+  volume={37},
+  number={6},
+  pages={504--528},
+  year={2003},
+  publisher={Elsevier}
+}
+</code></pre>
+<h3 id="ten-item-big-five-inventory-bfi-10">Ten-item big five inventory (BFI-10)</h3>
+<pre><code>@article{rammstedt2007measuring,
+  title={Measuring personality in one minute or less: A 10-item short version of the Big Five Inventory in English and German},
+  author={Rammstedt, Beatrice and John, Oliver P},
+  journal={Journal of research in Personality},
+  volume={41},
+  number={1},
+  pages={203--212},
+  year={2007},
+  publisher={Elsevier}
+}
+</code></pre>
+<h2 id="license">License</h2>
+<p>Users must cite this package in any publications which use it.</p>
+<p>It is licensed with the MIT <a href="https://github.com/dsbowen/hemlock-big5/blob/master/LICENSE">License</a>.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/" class="btn btn-neutral float-right" title="API">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/dsbowen/hemlock-big5/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+      
+        <span style="margin-left: 15px"><a href="api/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '.';</script>
+    <script src="js/theme.js" defer></script>
+      <script src="search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.1.2
+Build Date UTC : 2021-02-17 22:45:23.034359+00:00
+-->
