@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="css/theme.css" />
   <link rel="stylesheet" href="css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
-  <link href="css/extra.css" rel="stylesheet" />
+  <link href="https://dsbowen.github.io/assets/css/code-highlighting.css" rel="stylesheet" />
+  <link href="https://dsbowen.github.io/assets/css/tabs.css" rel="stylesheet" />
   
   <script>
     // Current page data
@@ -54,6 +55,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#run-your-app">Run your app</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a>
         <ul>
@@ -114,39 +117,96 @@
                 <h1 id="hemlock-big-5">Hemlock Big 5</h1>
 <p>Hemlock-big5 is a <a href="https://dsbowen.github.io/hemlock/" target="_blank">hemlock</a> extension for creating big 5 personality questionnaires.</p>
 <h2 id="installation">Installation</h2>
-<p>With hemlock-CLI (recommended):</p>
-<pre><code>$ hlk install hemlock-big5
-</code></pre>
-<p>With pip:</p>
-<pre><code>$ pip install hemlock-big5
-</code></pre>
+<div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1">Hemlock-CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>$ hlk install hemlock-big5
+</code></pre></div>
+</div>
+<input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2">pip</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>$ pip install hemlock-big5
+</code></pre></div>
+</div>
+</div>
 <h2 id="quickstart">Quickstart</h2>
-<p>This assumes you are using the hemlock template. In <code>survey.py</code>:</p>
-<pre><code class="language-python">from hemlock import Branch, Page, Label, route
-from hemlock_big5 import big5
+<p>This app implements the Ten-Item Personality Inventory and displays big 5 scores to participants.</p>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Using hemlock template</label><div class="tabbed-content">
+<p>In <code>survey.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">flask_login</span> <span class="kn">import</span> <span class="n">current_user</span>
+<span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">route</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">make_list</span>
+<span class="kn">from</span> <span class="nn">hemlock_big5</span> <span class="kn">import</span> <span class="n">big5</span>
 
-@route('/survey')
-def start():
-    return Branch(
-        big5(page=True),
-        Page(
-            Label('The end.'), 
-            terminal=True
-        )
-    )
-</code></pre>
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">big5</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;TIPI&#39;</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">display_score</span><span class="p">),</span> 
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">display_score</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="n">label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Big 5 scores:&#39;</span><span class="o">+</span><span class="n">make_list</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+        <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">trait</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> 
+        <span class="k">for</span> <span class="n">trait</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">current_user</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;Big5&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">])</span>
+</code></pre></div>
+</div>
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">From scratch</label><div class="tabbed-content">
+<p>Create a file <code>app.py</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">eventlet</span>
+<span class="n">eventlet</span><span class="o">.</span><span class="n">monkey_patch</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">flask_login</span> <span class="kn">import</span> <span class="n">current_user</span>
+<span class="kn">from</span> <span class="nn">hemlock</span> <span class="kn">import</span> <span class="n">Branch</span><span class="p">,</span> <span class="n">Page</span><span class="p">,</span> <span class="n">Label</span><span class="p">,</span> <span class="n">create_app</span><span class="p">,</span> <span class="n">route</span>
+<span class="kn">from</span> <span class="nn">hemlock.tools</span> <span class="kn">import</span> <span class="n">make_list</span>
+<span class="kn">from</span> <span class="nn">hemlock_big5</span> <span class="kn">import</span> <span class="n">big5</span>
+
+<span class="nd">@route</span><span class="p">(</span><span class="s1">&#39;/survey&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">Branch</span><span class="p">(</span>
+        <span class="n">big5</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s1">&#39;TIPI&#39;</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+        <span class="n">Page</span><span class="p">(</span>
+            <span class="n">Label</span><span class="p">(</span><span class="nb">compile</span><span class="o">=</span><span class="n">display_score</span><span class="p">),</span> 
+            <span class="n">terminal</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">display_score</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="n">label</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Big 5 scores:&#39;</span><span class="o">+</span><span class="n">make_list</span><span class="p">([</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">trait</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">trait</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">current_user</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;Big5&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">])</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">create_app</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">hemlock.app</span> <span class="kn">import</span> <span class="n">socketio</span>
+    <span class="n">socketio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+<h2 id="run-your-app">Run your app</h2>
+<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Hemlock-CLI</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>$ hlk serve
+</code></pre></div>
+</div>
+<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">python3</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code>$ python3 app.py
+</code></pre></div>
+</div>
+</div>
 <h2 id="citation">Citation</h2>
 <p>Hemlock-big5 includes several versions of big 5 personality questionnaires. Please cite the appropriate questionnaire along with hemlock.</p>
 <h3 id="hemlock-big5">Hemlock-big5</h3>
-<pre><code>@software{bowen2021hemlock-big5,
+<div class="highlight"><pre><span></span><code>@software{bowen2021hemlock-big5,
   author = {Dillon Bowen},
   title = {Hemlock-Big5},
   url = {https://dsbowen.github.io/hemlock-big5/},
   date = {2021-02-17},
 }
-</code></pre>
+</code></pre></div>
 <h3 id="ipip-50-item-inventory-ipip-50">IPIP 50-item inventory (IPIP-50)</h3>
-<pre><code>@article{donnellan2006mini,
+<div class="highlight"><pre><span></span><code>@article{donnellan2006mini,
   title={The mini-IPIP scales: tiny-yet-effective measures of the Big Five factors of personality.},
   author={Donnellan, M Brent and Oswald, Frederick L and Baird, Brendan M and Lucas, Richard E},
   journal={Psychological assessment},
@@ -156,9 +216,9 @@ def start():
   year={2006},
   publisher={American Psychological Association}
 }
-</code></pre>
+</code></pre></div>
 <h3 id="ten-item-personality-inventory-tipi">Ten-item personality inventory (TIPI)</h3>
-<pre><code>@article{gosling2003very,
+<div class="highlight"><pre><span></span><code>@article{gosling2003very,
   title={A very brief measure of the Big-Five personality domains},
   author={Gosling, Samuel D and Rentfrow, Peter J and Swann Jr, William B},
   journal={Journal of Research in personality},
@@ -168,9 +228,9 @@ def start():
   year={2003},
   publisher={Elsevier}
 }
-</code></pre>
+</code></pre></div>
 <h3 id="ten-item-big-five-inventory-bfi-10">Ten-item big five inventory (BFI-10)</h3>
-<pre><code>@article{rammstedt2007measuring,
+<div class="highlight"><pre><span></span><code>@article{rammstedt2007measuring,
   title={Measuring personality in one minute or less: A 10-item short version of the Big Five Inventory in English and German},
   author={Rammstedt, Beatrice and John, Oliver P},
   journal={Journal of research in Personality},
@@ -180,7 +240,7 @@ def start():
   year={2007},
   publisher={Elsevier}
 }
-</code></pre>
+</code></pre></div>
 <h2 id="license">License</h2>
 <p>Users must cite this package in any publications which use it.</p>
 <p>It is licensed with the MIT <a href="https://github.com/dsbowen/hemlock-big5/blob/master/LICENSE">License</a>.</p>
@@ -239,5 +299,5 @@ def start():
 
 <!--
 MkDocs version : 1.1.2
-Build Date UTC : 2021-02-17 22:45:23.034359+00:00
+Build Date UTC : 2021-03-11 12:12:32.666461+00:00
 -->
