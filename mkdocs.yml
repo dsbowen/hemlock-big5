@@ -8,4 +8,8 @@ nav:
   - API: api.md
 theme: readthedocs
 extra_css:
-  - css/extra.css
+  - https://dsbowen.github.io/assets/css/code-highlighting.css
+  - https://dsbowen.github.io/assets/css/tabs.css
+markdown_extensions:
+  - pymdownx.tabbed
+  - pymdownx.superfences
